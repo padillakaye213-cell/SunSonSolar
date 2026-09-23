@@ -3,977 +3,493 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sun Son Solar — Account</title>
+<title>Sun Son Solar — Create your account</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-:root{
-  --blue-dark:#0B4C8C;
-  --blue:#1668B8;
-  --blue-light:#EAF2FB;
-  --white:#FFFFFF;
-  --ink:#132433;
-  --ink-soft:#5C7185;
-  --line:#D7E3EF;
-  --err:#C13A2E;
-  --radius:8px;
-  --font:'Inter', sans-serif;
-}
-
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
+  :root{
+    --blue-dark:#0B4C8C;
+    --blue:#1668B8;
+    --blue-light:#EAF2FB;
+    --white:#FFFFFF;
+    --ink:#132433;
+    --ink-soft:#5C7185;
+    --line:#D7E3EF;
+    --err:#C13A2E;
+    --radius:8px;
+    --font:'Inter', sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --white:#0F1720;
+      --blue-light:#132B40;
+      --ink:#EAF1F8;
+      --ink-soft:#93A7B9;
+      --line:#24384A;
+    }
+  }
+  :root[data-theme="dark"]{
     --white:#0F1720;
     --blue-light:#132B40;
     --ink:#EAF1F8;
     --ink-soft:#93A7B9;
     --line:#24384A;
   }
-}
 
-:root[data-theme="dark"]{
-  --white:#0F1720;
-  --blue-light:#132B40;
-  --ink:#EAF1F8;
-  --ink-soft:#93A7B9;
-  --line:#24384A;
-}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--font);
+    color:var(--ink);
+    background:var(--blue-light);
+    min-height:100vh;
+  }
 
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
+  .page{ max-width:600px; margin:0 auto; padding:40px 20px 80px; }
 
-body{
-  font-family:var(--font);
-  color:var(--ink);
-  background:var(--blue-light);
-  min-height:100vh;
-}
+  .brand{ display:flex; align-items:center; gap:10px; margin-bottom:24px; }
+  .brand-mark{
+    width:32px;height:32px; border-radius:50%; background:var(--blue); flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .brand-mark svg{ width:18px;height:18px; }
+  .brand-name{ font-weight:700; font-size:18px; color:var(--blue-dark); }
 
-.page{
-  max-width:600px;
-  margin:0 auto;
-  padding:40px 20px 80px;
-}
+  .card{ background:var(--white); border:1px solid var(--line); border-radius:12px; padding:32px 28px; }
 
-.brand{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:24px;
-}
+  .card-head{ margin-bottom:24px; }
+  .card-head h1{ font-size:22px; font-weight:700; margin:0 0 6px; color:var(--ink); }
+  .card-head p{ margin:0; font-size:14px; color:var(--ink-soft); }
+  .card-head a{ color:var(--blue); text-decoration:none; font-weight:600; cursor:pointer; }
+  .card-head a:hover{ text-decoration:underline; }
 
-.brand-mark{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:var(--blue);
-  flex:none;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
+  fieldset{ border:0; margin:0 0 24px; padding:0; }
+  legend{ font-size:13px; font-weight:600; color:var(--blue-dark); margin-bottom:12px; padding:0; }
 
-.brand-mark svg{width:18px;height:18px;}
+  .segmented{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .seg-option{ position:relative; }
+  .seg-option input{ position:absolute; opacity:0; inset:0; width:100%; height:100%; margin:0; cursor:pointer; }
+  .seg-card{
+    border:1.5px solid var(--line); border-radius:var(--radius); padding:12px 14px;
+    text-align:center; font-size:14px; font-weight:600; color:var(--ink-soft);
+    transition:border-color .15s ease, background .15s ease, color .15s ease;
+  }
+  .seg-option input:checked + .seg-card{ border-color:var(--blue); background:var(--blue-light); color:var(--blue-dark); }
+  .seg-option input:focus-visible + .seg-card{ outline:2px solid var(--blue); outline-offset:2px; }
 
-.brand-name{
-  font-weight:700;
-  font-size:18px;
-  color:var(--blue-dark);
-}
+  .reveal{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .25s ease; }
+  .reveal.open{ grid-template-rows:1fr; }
+  .reveal-inner{ overflow:hidden; }
+  .reveal-pad{ padding-top:14px; }
 
-.card{
-  background:var(--white);
-  border:1px solid var(--line);
-  border-radius:12px;
-  padding:32px 28px;
-}
+  .grid-2{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .grid-3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; }
+  @media (max-width:480px){ .grid-2, .grid-3{ grid-template-columns:1fr; } }
 
-.card-head{margin-bottom:24px;}
+  .field{ margin-bottom:14px; display:flex; flex-direction:column; gap:5px; }
+  .field label{ font-size:13px; font-weight:500; color:var(--ink); }
+  .optional{ font-weight:400; color:var(--ink-soft); }
 
-.card-head h1{
-  font-size:22px;
-  font-weight:700;
-  margin:0 0 6px;
-  color:var(--ink);
-}
+  .field input, .field select{
+    font-family:var(--font); font-size:14px; color:var(--ink); background:var(--white);
+    border:1.5px solid var(--line); border-radius:var(--radius); padding:10px 12px;
+    outline:none; width:100%; transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .field select{
+    appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C7185' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 12px center; padding-right:30px;
+  }
+  .field input:focus, .field select:focus{ border-color:var(--blue); box-shadow:0 0 0 3px rgba(22,104,184,0.15); }
+  .field input.err, .field select.err{ border-color:var(--err); }
+  .field .msg-err{ font-size:12px; color:var(--err); display:none; }
+  .field.invalid .msg-err{ display:block; }
 
-.card-head p{
-  margin:0;
-  font-size:14px;
-  color:var(--ink-soft);
-}
+  .radio-row{ display:flex; gap:16px; flex-wrap:wrap; padding-top:2px; }
+  .radio-opt{ display:flex; align-items:center; gap:6px; font-size:14px; color:var(--ink); }
+  .radio-opt input{ width:15px; height:15px; accent-color:var(--blue); }
 
-.card-head a{
-  color:var(--blue);
-  text-decoration:none;
-  font-weight:600;
-}
+  .pw-field{ position:relative; }
+  .pw-toggle{
+    position:absolute; right:8px; top:50%; transform:translateY(-50%);
+    background:none; border:0; color:var(--blue); font-size:12px; font-weight:600; cursor:pointer; padding:4px 6px;
+  }
+  .pw-toggle:hover{ text-decoration:underline; }
 
-.card-head a:hover{text-decoration:underline;}
+  .terms-row{ display:flex; align-items:flex-start; gap:10px; margin-bottom:20px; }
+  .terms-row input{ width:16px; height:16px; margin-top:2px; flex:none; accent-color:var(--blue); cursor:pointer; }
+  .terms-row label{ font-size:13px; color:var(--ink); line-height:1.5; }
+  .terms-row a{ color:var(--blue); font-weight:600; text-decoration:none; }
+  .terms-row a:hover{ text-decoration:underline; }
+  .terms-err{ font-size:12px; color:var(--err); margin:-14px 0 20px 26px; display:none; }
+  .terms-err.show{ display:block; }
 
-.field{
-  margin-bottom:14px;
-  display:flex;
-  flex-direction:column;
-  gap:5px;
-}
+  .btn-primary{
+    width:100%; padding:12px 16px; border:0; border-radius:var(--radius); background:var(--blue);
+    color:#FFF; font-family:var(--font); font-size:15px; font-weight:600; cursor:pointer;
+    transition:background .15s ease;
+  }
+  .btn-primary:hover{ background:var(--blue-dark); }
 
-.field label{
-  font-size:13px;
-  font-weight:500;
-  color:var(--ink);
-}
+  .success-panel{ display:none; text-align:center; padding:40px 10px; }
+  .success-panel.show{ display:block; }
+  .success-icon{
+    width:52px;height:52px; border-radius:50%; background:var(--blue);
+    display:flex;align-items:center;justify-content:center; margin:0 auto 18px;
+  }
+  .success-panel h2{ font-size:19px; margin:0 0 8px; color:var(--ink); }
+  .success-panel p{ color:var(--ink-soft); font-size:14px; max-width:340px; margin:0 auto; line-height:1.6; }
 
-.optional{
-  font-weight:400;
-  color:var(--ink-soft);
-}
-
-.field input,
-.field select{
-  font-family:var(--font);
-  font-size:14px;
-  color:var(--ink);
-  background:var(--white);
-  border:1.5px solid var(--line);
-  border-radius:var(--radius);
-  padding:10px 12px;
-  outline:none;
-  width:100%;
-  transition:border-color .15s ease,box-shadow .15s ease;
-}
-
-.field select{
-  appearance:none;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235C7185' stroke-width='1.6' fill='none' fill-rule='evenodd'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:right 12px center;
-  padding-right:30px;
-}
-
-.field input:focus,
-.field select:focus{
-  border-color:var(--blue);
-  box-shadow:0 0 0 3px rgba(22,104,184,0.15);
-}
-
-.field input.err,
-.field select.err{border-color:var(--err);}
-
-.field .msg-err{
-  font-size:12px;
-  color:var(--err);
-  display:none;
-}
-
-.field.invalid .msg-err{display:block;}
-
-fieldset{
-  border:0;
-  margin:0 0 24px;
-  padding:0;
-}
-
-legend{
-  font-size:13px;
-  font-weight:600;
-  color:var(--blue-dark);
-  margin-bottom:12px;
-  padding:0;
-}
-
-.segmented{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-}
-
-.seg-option{position:relative;}
-
-.seg-option input{
-  position:absolute;
-  opacity:0;
-  inset:0;
-  width:100%;
-  height:100%;
-  margin:0;
-  cursor:pointer;
-}
-
-.seg-card{
-  border:1.5px solid var(--line);
-  border-radius:var(--radius);
-  padding:12px 14px;
-  text-align:center;
-  font-size:14px;
-  font-weight:600;
-  color:var(--ink-soft);
-  transition:border-color .15s ease,background .15s ease,color .15s ease;
-}
-
-.seg-option input:checked + .seg-card{
-  border-color:var(--blue);
-  background:var(--blue-light);
-  color:var(--blue-dark);
-}
-
-.seg-option input:focus-visible + .seg-card{
-  outline:2px solid var(--blue);
-  outline-offset:2px;
-}
-
-.reveal{
-  display:grid;
-  grid-template-rows:0fr;
-  transition:grid-template-rows .25s ease;
-}
-
-.reveal.open{grid-template-rows:1fr;}
-
-.reveal-inner{overflow:hidden;}
-
-.reveal-pad{padding-top:14px;}
-
-.grid-2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-
-.grid-3{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:14px;
-}
-
-@media (max-width:480px){
-  .grid-2,.grid-3{grid-template-columns:1fr;}
-}
-
-.radio-row{
-  display:flex;
-  gap:16px;
-  flex-wrap:wrap;
-  padding-top:2px;
-}
-
-.radio-opt{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  font-size:14px;
-  color:var(--ink);
-}
-
-.radio-opt input{
-  width:15px;
-  height:15px;
-  accent-color:var(--blue);
-}
-
-.pw-field{position:relative;}
-
-.pw-toggle{
-  position:absolute;
-  right:8px;
-  top:50%;
-  transform:translateY(-50%);
-  background:none;
-  border:0;
-  color:var(--blue);
-  font-size:12px;
-  font-weight:600;
-  cursor:pointer;
-  padding:4px 6px;
-}
-
-.pw-toggle:hover{text-decoration:underline;}
-
-.terms-row{
-  display:flex;
-  align-items:flex-start;
-  gap:10px;
-  margin-bottom:20px;
-}
-
-.terms-row input{
-  width:16px;
-  height:16px;
-  margin-top:2px;
-  flex:none;
-  accent-color:var(--blue);
-  cursor:pointer;
-}
-
-.terms-row label{
-  font-size:13px;
-  color:var(--ink);
-  line-height:1.5;
-}
-
-.terms-row a{
-  color:var(--blue);
-  font-weight:600;
-  text-decoration:none;
-}
-
-.terms-row a:hover{text-decoration:underline;}
-
-.terms-err{
-  font-size:12px;
-  color:var(--err);
-  margin:-14px 0 20px 26px;
-  display:none;
-}
-
-.terms-err.show{display:block;}
-
-.btn-primary{
-  width:100%;
-  padding:12px 16px;
-  border:0;
-  border-radius:var(--radius);
-  background:var(--blue);
-  color:#FFF;
-  font-family:var(--font);
-  font-size:15px;
-  font-weight:600;
-  cursor:pointer;
-  transition:background .15s ease;
-}
-
-.btn-primary:hover{background:var(--blue-dark);}
-
-.success-panel{
-  display:none;
-  text-align:center;
-  padding:40px 10px;
-}
-
-.success-panel.show{display:block;}
-
-.success-icon{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background:var(--blue);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 18px;
-}
-
-.success-panel h2{
-  font-size:19px;
-  margin:0 0 8px;
-  color:var(--ink);
-}
-
-.success-panel p{
-  color:var(--ink-soft);
-  font-size:14px;
-  max-width:340px;
-  margin:0 auto;
-  line-height:1.6;
-}
-
-form.hide{display:none;}
-
-.view{display:none;}
-.view.active{display:block;}
+  form.hide{ display:none; }
 </style>
 </head>
-
 <body>
 <div class="page">
 
   <div class="brand">
     <span class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="4" fill="#FFF"/>
-        <g stroke="#FFF" stroke-width="1.6" stroke-linecap="round">
-          <line x1="12" y1="2" x2="12" y2="4.5"/>
-          <line x1="12" y1="19.5" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="4.5" y2="12"/>
-          <line x1="19.5" y1="12" x2="22" y2="12"/>
-          <line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/>
-          <line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/>
-          <line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/>
-          <line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/>
-        </g>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="4" fill="#FFF"/><g stroke="#FFF" stroke-width="1.6" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="4.9" y1="4.9" x2="6.6" y2="6.6"/><line x1="17.4" y1="17.4" x2="19.1" y2="19.1"/><line x1="4.9" y1="19.1" x2="6.6" y2="17.4"/><line x1="17.4" y1="6.6" x2="19.1" y2="4.9"/></g></svg>
     </span>
     <span class="brand-name">Sun Son Solar</span>
   </div>
 
   <div class="card">
-
-    <!-- SIGN IN -->
-    <div class="view active" id="signinView">
-      <div class="card-head">
-        <h1>Sign in</h1>
-        <p>New to Sun Son Solar?
-          <a href="#" id="showRegister">Create an account</a>
-        </p>
-      </div>
-
-      <form id="signinForm" novalidate>
-        <div class="field">
-          <label for="siUsername">Username</label>
-          <input type="text" id="siUsername" name="siUsername"
-                 autocomplete="username" required>
-          <span class="msg-err">Enter your username.</span>
-        </div>
-
-        <div class="field">
-          <label for="siPassword">Password</label>
-          <div class="pw-field">
-            <input type="password" id="siPassword" name="siPassword"
-                   autocomplete="current-password" required>
-            <button type="button" class="pw-toggle"
-                    data-target="siPassword">Show</button>
-          </div>
-          <span class="msg-err">Enter your password.</span>
-        </div>
-
-        <button type="submit" class="btn-primary">Sign in</button>
-      </form>
+    <div class="card-head">
+      <h1>Create your account</h1>
+      <p>Already registered? <a href="signin.html">Sign in instead</a></p>
     </div>
 
+    <form id="regForm" novalidate>
 
-    <!-- REGISTRATION -->
-    <div class="view" id="registerView">
-      <div class="card-head">
-        <h1>Create your account</h1>
-        <p>Already registered?
-          <a href="#" id="showSignin">Sign in instead</a>
-        </p>
-      </div>
-
-      <form id="regForm" novalidate>
-
-        <fieldset>
-          <legend>Account type</legend>
-
-          <div class="segmented">
-            <label class="seg-option">
-              <input type="radio" name="accountType"
-                     value="customer" checked>
-              <span class="seg-card">Customer</span>
-            </label>
-
-            <label class="seg-option">
-              <input type="radio" name="accountType"
-                     value="employee">
-              <span class="seg-card">Employee</span>
-            </label>
-          </div>
-
-          <div class="reveal" id="deptReveal">
-            <div class="reveal-inner">
-              <div class="reveal-pad">
-                <div class="field" id="deptField">
-                  <label for="department">Department</label>
-
-                  <select id="department" name="department">
-                    <option value="" disabled selected>
-                      Select your department
-                    </option>
-                    <option value="sales">Sales</option>
-                    <option value="installation">
-                      Installation &amp; field operations
-                    </option>
-                    <option value="customer_support">
-                      Customer support
-                    </option>
-                    <option value="engineering">
-                      Engineering &amp; design
-                    </option>
-                    <option value="finance">
-                      Finance &amp; accounting
-                    </option>
-                    <option value="marketing">Marketing</option>
-                    <option value="hr">Human resources</option>
-                  </select>
-
-                  <span class="msg-err">
-                    Select a department to continue.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
-
-        <fieldset>
-          <legend>Personal details</legend>
-
-          <div class="grid-3">
-            <div class="field">
-              <label for="firstName">First name</label>
-              <input type="text" id="firstName" name="firstName"
-                     autocomplete="given-name" required>
-              <span class="msg-err">Enter your first name.</span>
-            </div>
-
-            <div class="field">
-              <label for="middleName">
-                Middle name <span class="optional">(optional)</span>
-              </label>
-              <input type="text" id="middleName" name="middleName"
-                     autocomplete="additional-name">
-            </div>
-
-            <div class="field">
-              <label for="lastName">Last name</label>
-              <input type="text" id="lastName" name="lastName"
-                     autocomplete="family-name" required>
-              <span class="msg-err">Enter your last name.</span>
-            </div>
-          </div>
-
-          <div class="grid-2">
-            <div class="field">
-              <label for="birthdate">Date of birth</label>
-              <input type="date" id="birthdate" name="birthdate" required>
-              <span class="msg-err">
-                Enter a valid date of birth (18+).
-              </span>
-            </div>
-
-            <div class="field">
-              <label>Gender</label>
-              <div class="radio-row">
-                <label class="radio-opt">
-                  <input type="radio" name="gender"
-                         value="female" required>
-                  Female
-                </label>
-
-                <label class="radio-opt">
-                  <input type="radio" name="gender" value="male">
-                  Male
-                </label>
-
-                <label class="radio-opt">
-                  <input type="radio" name="gender"
-                         value="unspecified">
-                  Prefer not to say
-                </label>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-
-
-        <fieldset>
-          <legend>Contact information</legend>
-
-          <div class="field">
-            <label for="email">Email address</label>
-            <input type="email" id="email" name="email"
-                   autocomplete="email" required>
-            <span class="msg-err">
-              Enter a valid email address.
-            </span>
-          </div>
-
-          <div class="grid-2">
-            <div class="field">
-              <label for="phone">Phone number</label>
-              <input type="tel" id="phone" name="phone"
-                     autocomplete="tel"
-                     placeholder="0912 345 6789" required>
-              <span class="msg-err">
-                Enter a valid phone number.
-              </span>
-            </div>
-
-            <div class="field">
-              <label for="address">Home address</label>
-              <input type="text" id="address" name="address"
-                     autocomplete="street-address"
-                     placeholder="Street, city" required>
-              <span class="msg-err">Enter your address.</span>
-            </div>
-          </div>
-        </fieldset>
-
-
-        <fieldset>
-          <legend>Login details</legend>
-
-          <div class="field">
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username"
-                   autocomplete="username" required minlength="4">
-            <span class="msg-err">
-              Username must be at least 4 characters, no spaces.
-            </span>
-          </div>
-
-          <div class="field">
-            <label for="password">Password</label>
-            <div class="pw-field">
-              <input type="password" id="password" name="password"
-                     autocomplete="new-password" required minlength="8">
-              <button type="button" class="pw-toggle"
-                      data-target="password">Show</button>
-            </div>
-            <span class="msg-err">
-              Password must be at least 8 characters.
-            </span>
-          </div>
-
-          <div class="field">
-            <label for="confirmPassword">Confirm password</label>
-            <div class="pw-field">
-              <input type="password" id="confirmPassword"
-                     name="confirmPassword"
-                     autocomplete="new-password" required>
-              <button type="button" class="pw-toggle"
-                      data-target="confirmPassword">Show</button>
-            </div>
-            <span class="msg-err">Passwords don't match.</span>
-          </div>
-        </fieldset>
-
-
-        <div class="terms-row">
-          <input type="checkbox" id="terms" name="terms" required>
-          <label for="terms">
-            I agree to the
-            <a href="#">Terms &amp; Conditions</a>
-            and
-            <a href="#">Privacy Policy</a>.
+      <fieldset>
+        <legend>Account type</legend>
+        <div class="segmented">
+          <label class="seg-option">
+            <input type="radio" name="accountType" value="customer" checked>
+            <span class="seg-card">Customer</span>
+          </label>
+          <label class="seg-option">
+            <input type="radio" name="accountType" value="employee">
+            <span class="seg-card">Employee</span>
           </label>
         </div>
 
-        <p class="terms-err" id="termsErr">
-          You must accept the Terms &amp; Conditions to sign up.
-        </p>
+        <div class="reveal" id="deptReveal">
+          <div class="reveal-inner">
+            <div class="reveal-pad">
+              <div class="field" id="deptField">
+                <label for="department">Department</label>
+                <select id="department" name="department">
+                  <option value="" disabled selected>Select your department</option>
+                  <option value="sales">Sales</option>
+                  <option value="installation">Installation &amp; field operations</option>
+                  <option value="customer_support">Customer support</option>
+                  <option value="engineering">Engineering &amp; design</option>
+                  <option value="finance">Finance &amp; accounting</option>
+                  <option value="marketing">Marketing</option>
+                  <option value="hr">Human resources</option>
+                </select>
+                <span class="msg-err">Select a department to continue.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
 
-        <button type="submit" class="btn-primary" id="submitBtn">
-          Create account
-        </button>
-      </form>
+      <fieldset>
+        <legend>Personal details</legend>
 
-
-      <div class="success-panel" id="successPanel">
-        <div class="success-icon">
-          <svg viewBox="0 0 24 24" width="24" height="24"
-               fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M4 12.5l5 5L20 7"
-                  stroke="#FFF"
-                  stroke-width="2.2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"/>
-          </svg>
+        <div class="grid-3">
+          <div class="field" id="firstNameField">
+            <label for="firstName">First name</label>
+            <input type="text" id="firstName" name="firstName" autocomplete="given-name" required>
+            <span class="msg-err">Enter your first name.</span>
+          </div>
+          <div class="field" id="middleNameField">
+            <label for="middleName">Middle name <span class="optional">(optional)</span></label>
+            <input type="text" id="middleName" name="middleName" autocomplete="additional-name">
+          </div>
+          <div class="field" id="lastNameField">
+            <label for="lastName">Last name</label>
+            <input type="text" id="lastName" name="lastName" autocomplete="family-name" required>
+            <span class="msg-err">Enter your last name.</span>
+          </div>
         </div>
 
-        <h2>Account created</h2>
+        <div class="grid-2">
+          <div class="field" id="birthdateField">
+            <label for="birthdate">Date of birth</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+            <span class="msg-err">Enter a valid date of birth (18+).</span>
+          </div>
+          <div class="field" id="genderField">
+            <label>Gender</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="gender" value="female" required> Female</label>
+              <label class="radio-opt"><input type="radio" name="gender" value="male"> Male</label>
+              <label class="radio-opt"><input type="radio" name="gender" value="unspecified"> Prefer not to say</label>
+            </div>
+            <span class="msg-err">Select a gender option.</span>
+          </div>
+        </div>
+      </fieldset>
 
-        <p id="successCopy">
-          Welcome to Sun Son Solar. You can now sign in
-          with your new username and password.
-        </p>
+      <fieldset>
+        <legend>Contact information</legend>
 
-        <button type="button" class="btn-primary"
-                id="goToSignInBtn"
-                style="margin-top:20px;width:auto;padding:11px 22px;">
-          Continue to sign in
-        </button>
+        <div class="field" id="emailField">
+          <label for="email">Email address</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+          <span class="msg-err">Enter a valid email address.</span>
+        </div>
+
+        <div class="grid-2">
+          <div class="field" id="phoneField">
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="(555) 123-4567" required>
+            <span class="msg-err">Enter a valid phone number (10–15 digits).</span>
+          </div>
+          <div class="field" id="addressField">
+            <label for="address">Home address</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" placeholder="Street, city, state, ZIP" required>
+            <span class="msg-err">Enter your address.</span>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Login details</legend>
+
+        <div class="field" id="usernameField">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username" required minlength="4">
+          <span class="msg-err">Username must be at least 4 characters, no spaces.</span>
+        </div>
+
+        <div class="field" id="passwordField">
+          <label for="password">Password</label>
+          <div class="pw-field">
+            <input type="password" id="password" name="password" autocomplete="new-password" required minlength="8">
+            <button type="button" class="pw-toggle" data-target="password">Show</button>
+          </div>
+          <span class="msg-err">Password must be at least 8 characters.</span>
+        </div>
+
+        <div class="field" id="confirmPasswordField">
+          <label for="confirmPassword">Confirm password</label>
+          <div class="pw-field">
+            <input type="password" id="confirmPassword" name="confirmPassword" autocomplete="new-password" required>
+            <button type="button" class="pw-toggle" data-target="confirmPassword">Show</button>
+          </div>
+          <span class="msg-err">Passwords don't match.</span>
+        </div>
+      </fieldset>
+
+      <div class="terms-row">
+        <input type="checkbox" id="terms" name="terms" required>
+        <label for="terms">I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Privacy Policy</a>.</label>
       </div>
-    </div>
+      <p class="terms-err" id="termsErr">You must accept the Terms &amp; Conditions to sign up.</p>
 
+      <button type="submit" class="btn-primary" id="submitBtn">Create account</button>
+    </form>
+
+    <div class="success-panel" id="successPanel">
+      <div class="success-icon">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 12.5l5 5L20 7" stroke="#FFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <h2>Account created</h2>
+      <p id="successCopy">Welcome to Sun Son Solar. You can now sign in with your new username and password.</p>
+      <button type="button" class="btn-primary" id="goToSignInBtn" style="margin-top:20px;width:auto;padding:11px 22px;">Continue to sign in</button>
+    </div>
   </div>
 </div>
 
+<<script>
+  // ===== ELEMENT REFERENCES =====
+  const regForm = document.getElementById('regForm');
+  const deptReveal = document.getElementById('deptReveal');
+  const department = document.getElementById('department');
+  const firstName = document.getElementById('firstName');
+  const middleName = document.getElementById('middleName');
+  const lastName = document.getElementById('lastName');
+  const birthdate = document.getElementById('birthdate');
+  const email = document.getElementById('email');
+  const phone = document.getElementById('phone');
+  const address = document.getElementById('address');
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
+  const confirmPassword = document.getElementById('confirmPassword');
+  const terms = document.getElementById('terms');
+  const termsErr = document.getElementById('termsErr');
+  const successPanel = document.getElementById('successPanel');
+  const goToSignInBtn = document.getElementById('goToSignInBtn');
 
-<script>
-(function(){
+  const fields = {
+    dept: document.getElementById('deptField'),
+    firstName: document.getElementById('firstNameField'),
+    lastName: document.getElementById('lastNameField'),
+    birthdate: document.getElementById('birthdateField'),
+    gender: document.getElementById('genderField'),
+    email: document.getElementById('emailField'),
+    phone: document.getElementById('phoneField'),
+    address: document.getElementById('addressField'),
+    username: document.getElementById('usernameField'),
+    password: document.getElementById('passwordField'),
+    confirmPassword: document.getElementById('confirmPasswordField'),
+  };
 
-  /* SWITCH BETWEEN SIGN IN AND REGISTRATION */
-  var signinView = document.getElementById('signinView');
-  var registerView = document.getElementById('registerView');
-
-  document.getElementById('showRegister').addEventListener('click', function(e){
-    e.preventDefault();
-    signinView.classList.remove('active');
-    registerView.classList.add('active');
-  });
-
-  document.getElementById('showSignin').addEventListener('click', function(e){
-    e.preventDefault();
-    registerView.classList.remove('active');
-    signinView.classList.add('active');
-  });
-
-
-  /* SHOW / HIDE PASSWORD */
-  document.querySelectorAll('.pw-toggle').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var input = document.getElementById(
-        btn.getAttribute('data-target')
-      );
-
-      var showing = input.type === 'text';
-
-      input.type = showing ? 'password' : 'text';
-      btn.textContent = showing ? 'Show' : 'Hide';
-    });
-  });
-
-
-  /* SIGN IN VALIDATION */
-  var signinForm = document.getElementById('signinForm');
-
-  signinForm.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    var valid = true;
-
-    ['siUsername','siPassword'].forEach(function(id){
-      var input = document.getElementById(id);
-      var field = input.closest('.field');
-      var ok = input.value.trim().length > 0;
-
-      field.classList.toggle('invalid', !ok);
-      input.classList.toggle('err', !ok);
-
-      if(!ok) valid = false;
-    });
-
-    if(!valid) return;
-
-    window.location.href = 'index.html';
-  });
-
-
-  /* REGISTRATION */
-  var form = document.getElementById('regForm');
-  var deptReveal = document.getElementById('deptReveal');
-  var deptField = document.getElementById('deptField');
-  var deptSelect = document.getElementById('department');
-  var accountRadios =
-    form.querySelectorAll('input[name="accountType"]');
-
-  function isEmployee(){
-    return form.querySelector(
-      'input[name="accountType"]:checked'
-    ).value === 'employee';
-  }
-
-  function syncDept(){
-    var employee = isEmployee();
-
-    if(employee){
-      deptReveal.classList.add('open');
-      deptSelect.setAttribute('required','required');
-    }else{
-      deptReveal.classList.remove('open');
-      deptSelect.removeAttribute('required');
-      deptField.classList.remove('invalid');
-      deptSelect.classList.remove('err');
-    }
-  }
-
-  accountRadios.forEach(function(r){
-    r.addEventListener('change', syncDept);
-  });
-
-  syncDept();
-
-
-  /* TERMS CHECKBOX */
-  var termsBox = document.getElementById('terms');
-  var termsErr = document.getElementById('termsErr');
-
-  termsBox.addEventListener('change', function(){
-    if(termsBox.checked){
-      termsErr.classList.remove('show');
-    }
-  });
-
-
-  function setInvalid(fieldEl, invalid){
-    if(!fieldEl) return;
-
+  function setInvalid(fieldEl, invalid) {
+    if (!fieldEl) return;
     fieldEl.classList.toggle('invalid', invalid);
-
-    var input = fieldEl.querySelector('input, select');
-
-    if(input){
-      input.classList.toggle('err', invalid);
-    }
+    const input = fieldEl.querySelector('input, select');
+    if (input) input.classList.toggle('err', invalid);
   }
 
-  function validEmail(v){
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  }
-
-  function validPhone(v){
-    return v.replace(/[^0-9]/g,'').length >= 7;
-  }
-
-  function validAge18(dateStr){
-    if(!dateStr) return false;
-
-    var dob = new Date(dateStr);
-
-    if(isNaN(dob.getTime())) return false;
-
-    var today = new Date();
-
-    var age =
-      today.getFullYear() - dob.getFullYear();
-
-    var m =
-      today.getMonth() - dob.getMonth();
-
-    if(
-      m < 0 ||
-      (m === 0 && today.getDate() < dob.getDate())
-    ){
-      age--;
-    }
-
-    return age >= 18 && dob < today;
-  }
-
-
-  form.addEventListener('submit', function(e){
-    e.preventDefault();
-
-    var valid = true;
-
-    function check(id, ok){
-      var field =
-        document.getElementById(id).closest('.field');
-
-      setInvalid(field, !ok);
-
-      if(!ok) valid = false;
-    }
-
-    check(
-      'firstName',
-      form.firstName.value.trim().length > 0
-    );
-
-    check(
-      'lastName',
-      form.lastName.value.trim().length > 0
-    );
-
-    check(
-      'birthdate',
-      validAge18(form.birthdate.value)
-    );
-
-    check(
-      'email',
-      validEmail(form.email.value.trim())
-    );
-
-    check(
-      'phone',
-      validPhone(form.phone.value)
-    );
-
-    check(
-      'address',
-      form.address.value.trim().length > 0
-    );
-
-    check(
-      'username',
-      /^\S{4,}$/.test(form.username.value)
-    );
-
-    check(
-      'password',
-      form.password.value.length >= 8
-    );
-
-    check(
-      'confirmPassword',
-      form.confirmPassword.value === form.password.value &&
-      form.password.value.length > 0
-    );
-
-    if(isEmployee()){
-      var deptOk = deptSelect.value !== '';
-
-      setInvalid(deptField, !deptOk);
-
-      if(!deptOk) valid = false;
-    }
-
-    if(!termsBox.checked){
-      termsErr.classList.add('show');
-      valid = false;
-    }else{
-      termsErr.classList.remove('show');
-    }
-
-    if(!valid){
-      var firstInvalid =
-        form.querySelector('.invalid input, .invalid select') ||
-        (!termsBox.checked ? termsBox : null);
-
-      if(firstInvalid) firstInvalid.focus();
-
-      return;
-    }
-
-    var accountType =
-      isEmployee() ? 'employee' : 'customer';
-
-    document.getElementById('successCopy').textContent =
-      accountType === 'employee'
-        ? 'Welcome to the team, ' +
-          form.firstName.value.trim() +
-          '. Your Sun Son Solar staff account is ready — sign in to access your department tools.'
-        : 'Welcome, ' +
-          form.firstName.value.trim() +
-          '. Your Sun Son Solar account is ready — sign in to track your installation and billing.';
-
-    form.classList.add('hide');
-    document.getElementById('successPanel').classList.add('show');
+  // ===== ACCOUNT TYPE REVEAL =====
+  document.querySelectorAll('input[name="accountType"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === 'employee') deptReveal.classList.add('open');
+      else {
+        deptReveal.classList.remove('open');
+        setInvalid(fields.dept, false);
+        department.value = '';
+      }
+    });
   });
 
-
-  /* RETURN TO SIGN IN AFTER REGISTRATION */
-  document.getElementById('goToSignInBtn')
-    .addEventListener('click', function(){
-
-      document.getElementById('successPanel')
-        .classList.remove('show');
-
-      form.classList.remove('hide');
-
-      registerView.classList.remove('active');
-      signinView.classList.add('active');
-
-      form.reset();
-      syncDept();
-      termsErr.classList.remove('show');
-
-      document.querySelectorAll('.field').forEach(function(field){
-        field.classList.remove('invalid');
-      });
-
-      document.querySelectorAll('.field input, .field select')
-        .forEach(function(input){
-          input.classList.remove('err');
-        });
+  // ===== PASSWORD TOGGLE =====
+  document.querySelectorAll('.pw-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
+      else { input.type = 'password'; btn.textContent = 'Show'; }
     });
+  });
 
-})();
+  // ===== HELPERS =====
+  const isNonEmpty   = v => v.trim().length > 0;
+  const isValidEmail = v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim());
+  const isValidPhone = v => { const d = v.replace(/\D/g,''); return d.length >= 10 && d.length <= 15; };
+  const isValidUser  = v => /^\S{4,}$/.test(v.trim());
+  const isValidPwd   = v => v.length >= 8;
+
+  function attachValidation(inputEl, fieldEl, validateFn) {
+    inputEl.addEventListener('blur', () => setInvalid(fieldEl, !validateFn(inputEl.value)));
+    inputEl.addEventListener('input', () => { if (validateFn(inputEl.value)) setInvalid(fieldEl, false); });
+  }
+
+  attachValidation(firstName, fields.firstName, isNonEmpty);
+  attachValidation(lastName,  fields.lastName,  isNonEmpty);
+  attachValidation(email,     fields.email,     isValidEmail);
+  attachValidation(phone,     fields.phone,     isValidPhone);
+  attachValidation(address,   fields.address,   isNonEmpty);
+  attachValidation(username,  fields.username,  isValidUser);
+  attachValidation(password,  fields.password,  isValidPwd);
+  attachValidation(confirmPassword, fields.confirmPassword, v => v === password.value && v.length > 0);
+
+  password.addEventListener('input', () => {
+    if (confirmPassword.value.length > 0)
+      setInvalid(fields.confirmPassword, confirmPassword.value !== password.value);
+    if (password.value.length >= 8) setInvalid(fields.password, false);
+  });
+
+  birthdate.addEventListener('blur', () => {
+    const val = birthdate.value;
+    if (!val) { setInvalid(fields.birthdate, true); return; }
+    const dob = new Date(val), today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+    setInvalid(fields.birthdate, !(age >= 18));
+  });
+  birthdate.addEventListener('input', () => { if (birthdate.value) setInvalid(fields.birthdate, false); });
+
+  document.querySelectorAll('input[name="gender"]').forEach(r =>
+    r.addEventListener('change', () => setInvalid(fields.gender, false)));
+
+  terms.addEventListener('change', () => termsErr.classList.toggle('show', !terms.checked));
+
+  // ===== VALIDATE ALL =====
+  function validateForm() {
+    let valid = true;
+    const accountType = document.querySelector('input[name="accountType"]:checked').value;
+
+    if (accountType === 'employee' && department.value === '') { setInvalid(fields.dept, true); valid = false; }
+    else setInvalid(fields.dept, false);
+
+    if (!isNonEmpty(firstName.value)) { setInvalid(fields.firstName, true); valid = false; } else setInvalid(fields.firstName, false);
+    if (!isNonEmpty(lastName.value))  { setInvalid(fields.lastName,  true); valid = false; } else setInvalid(fields.lastName,  false);
+
+    const dobVal = birthdate.value;
+    if (!dobVal) { setInvalid(fields.birthdate, true); valid = false; }
+    else {
+      const dob = new Date(dobVal), today = new Date();
+      let age = today.getFullYear() - dob.getFullYear();
+      const m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+      if (age < 18) { setInvalid(fields.birthdate, true); valid = false; }
+      else setInvalid(fields.birthdate, false);
+    }
+
+    if (!document.querySelector('input[name="gender"]:checked')) { setInvalid(fields.gender, true); valid = false; }
+    else setInvalid(fields.gender, false);
+
+    if (!isValidEmail(email.value)) { setInvalid(fields.email, true); valid = false; } else setInvalid(fields.email, false);
+    if (!isValidPhone(phone.value)) { setInvalid(fields.phone, true); valid = false; } else setInvalid(fields.phone, false);
+    if (!isNonEmpty(address.value)) { setInvalid(fields.address, true); valid = false; } else setInvalid(fields.address, false);
+    if (!isValidUser(username.value)) { setInvalid(fields.username, true); valid = false; } else setInvalid(fields.username, false);
+    if (!isValidPwd(password.value)) { setInvalid(fields.password, true); valid = false; } else setInvalid(fields.password, false);
+
+    if (confirmPassword.value !== password.value || confirmPassword.value === '') {
+      setInvalid(fields.confirmPassword, true); valid = false;
+    } else setInvalid(fields.confirmPassword, false);
+
+    if (!terms.checked) { termsErr.classList.add('show'); valid = false; }
+    else termsErr.classList.remove('show');
+
+    return valid;
+  }
+
+  // ===== SUBMIT =====
+  regForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+
+    const body = new FormData();
+    body.append('accountType',    document.querySelector('input[name="accountType"]:checked').value);
+    body.append('department',     department.value);
+    body.append('firstname',      firstName.value.trim());
+    body.append('middle_name',    middleName.value.trim());
+    body.append('lastname',       lastName.value.trim());
+    body.append('birthdate',      birthdate.value);
+    body.append('gender',         document.querySelector('input[name="gender"]:checked')?.value || '');
+    body.append('email',          email.value.trim());
+    body.append('phone',          phone.value.trim());
+    body.append('address',        address.value.trim());
+    body.append('username',       username.value.trim());
+    body.append('password',       password.value);
+    body.append('confirmPassword', confirmPassword.value);
+
+    try {
+      const res = await fetch('register_process.php', { method: 'POST', body });
+      const data = await res.json();
+
+      if (data.ok) {
+        regForm.classList.add('hide');
+        successPanel.classList.add('show');
+      } else {
+        alert(data.error || 'Registration failed.');
+      }
+    } catch (err) {
+      alert('Server error. Please try again.');
+    }
+  });
+
+  goToSignInBtn.addEventListener('click', () => {
+    window.location.href = 'signin.html?registered=true';
+  });
 </script>
-
 </body>
 </html>
