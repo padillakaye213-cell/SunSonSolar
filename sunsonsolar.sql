@@ -1,31 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Host: 127.0.0.1
--- Generation Time: Sep 23, 2026 at 05:28 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+SET NAMES utf8mb4;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `sunsonsolar`
---
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
+CREATE DATABASE IF NOT EXISTS `sunsonsolar` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `sunsonsolar`;
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
@@ -44,37 +24,19 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `users`
---
-
 INSERT INTO `users` (`user_id`, `role`, `firstname`, `middle_name`, `last_name`, `birthdate`, `gender`, `email`, `phone_number`, `address`, `department`, `username`, `password`, `created_at`) VALUES
 (1, 'admin', 'Katherine', NULL, 'Sinagaraw', NULL, NULL, NULL, NULL, NULL, NULL, 'KittyKat16', 'Password@SunShine16', '2026-09-23 03:16:54'),
-(2, 'admin', 'Sol', NULL, 'Solis', NULL, NULL, NULL, NULL, NULL, NULL, 'sol_admin', 'admin123', '2026-09-23 03:16:54');
+(2, 'admin', 'Sol', NULL, 'Solis', NULL, NULL, NULL, NULL, NULL, NULL, 'sol_admin', 'admin123', '2026-09-23 03:16:54'),
+(3, 'admin', 'Rian', 'S.', 'Villanueva', '2006-06-07', 'male', 'krrsvillanueva2007@gmail.com', '096983436050', 'Pasig City', NULL, 'Rixtre', 'Rixtre@2006', '2026-09-23 03:16:54'),
+(4, 'admin', 'Wency', NULL, 'Dela Cruz', NULL, NULL, NULL, NULL, NULL, NULL, 'wency', 'Wency@2026', '2026-09-23 03:16:54'),
+(5, 'employee', 'Marielle', NULL, 'Reyes', NULL, NULL, NULL, NULL, NULL, 'customer_support', 'marielle', 'Marielle@2026', '2026-09-23 03:16:54');
 
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `users`
---
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `username` (`username`),
   ADD UNIQUE KEY `email` (`email`);
 
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `users`
---
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-COMMIT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+COMMIT;

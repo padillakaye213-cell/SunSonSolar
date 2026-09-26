@@ -91,7 +91,6 @@
   }
   .btn-primary:hover{ background:var(--blue-dark); }
 
-  /* success message on sign-in */
   .signin-success{
     display:none;
     background:var(--blue-light);
@@ -148,10 +147,9 @@
 </div>
 
 <script>
-  // ===== SIGN IN VALIDATION =====
-  const signinForm   = document.getElementById('signinForm');
-  const siUsername   = document.getElementById('siUsername');
-  const siPassword   = document.getElementById('siPassword');
+  const signinForm = document.getElementById('signinForm');
+  const siUsername = document.getElementById('siUsername');
+  const siPassword = document.getElementById('siPassword');
   const siUsernameField = document.getElementById('siUsernameField');
   const siPasswordField = document.getElementById('siPasswordField');
 
@@ -163,20 +161,50 @@
 
   function validateSignin() {
     let valid = true;
-    if (siUsername.value.trim() === '') { setInvalid(siUsernameField, true); valid = false; }
-    else setInvalid(siUsernameField, false);
-    if (siPassword.value === '') { setInvalid(siPasswordField, true); valid = false; }
-    else setInvalid(siPasswordField, false);
+
+    if (siUsername.value.trim() === '') {
+      setInvalid(siUsernameField, true);
+      valid = false;
+    } else {
+      setInvalid(siUsernameField, false);
+    }
+
+    if (siPassword.value === '') {
+      setInvalid(siPasswordField, true);
+      valid = false;
+    } else {
+      setInvalid(siPasswordField, false);
+    }
+
     return valid;
   }
 
-  siUsername.addEventListener('input', () => { if (siUsername.value.trim() !== '') setInvalid(siUsernameField, false); });
-  siPassword.addEventListener('input', () => { if (siPassword.value !== '') setInvalid(siPasswordField, false); });
+  function setupPasswordToggle() {
+    document.querySelectorAll('.pw-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const input = document.getElementById(btn.dataset.target);
+        if (input.type === 'password') {
+          input.type = 'text';
+          btn.textContent = 'Hide';
+        } else {
+          input.type = 'password';
+          btn.textContent = 'Show';
+        }
+      });
+    });
+  }
 
-  signinForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (!validateSignin()) return;
+  function redirectByRole(role) {
+    if (role === 'admin') {
+      window.location.href = 'admin_dashboard.php';
+    } else if (role === 'employee') {
+      window.location.href = 'employee_dashboard.php';
+    } else {
+      window.location.href = 'customer_dashboard.php';
+    }
+  }
 
+  async function submitSignin() {
     const body = new FormData();
     body.append('username', siUsername.value.trim());
     body.append('password', siPassword.value);
@@ -186,38 +214,39 @@
       const data = await res.json();
 
       if (data.ok) {
-        // Save to localStorage for quick access (optional)
         localStorage.setItem('sunsonsolar_user', JSON.stringify(data));
-
-        // Route by role
-        if (data.role === 'admin') {
-          window.location.href = 'admin_dashboard.php';
-        } else if (data.role === 'employee') {
-          window.location.href = 'employee_dashboard.php';
-        } else {
-          window.location.href = 'customer_dashboard.php';
-        }
+        redirectByRole(data.role);
       } else {
         alert(data.error || 'Sign in failed.');
       }
     } catch (err) {
       alert('Server error. Please try again.');
     }
-  });
-
-  // ===== PASSWORD TOGGLE =====
-  document.querySelectorAll('.pw-toggle').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const input = document.getElementById(btn.dataset.target);
-      if (input.type === 'password') { input.type = 'text'; btn.textContent = 'Hide'; }
-      else { input.type = 'password'; btn.textContent = 'Show'; }
-    });
-  });
-
-  // ===== SUCCESS BANNER FROM REGISTRATION =====
-  if (window.location.search.includes('registered=true')) {
-    document.getElementById('signinSuccess').classList.add('show');
   }
+
+  function checkRegistrationSuccess() {
+    if (window.location.search.includes('registered=true')) {
+      document.getElementById('signinSuccess').classList.add('show');
+    }
+  }
+
+  setupPasswordToggle();
+
+  siUsername.addEventListener('input', () => {
+    if (siUsername.value.trim() !== '') setInvalid(siUsernameField, false);
+  });
+
+  siPassword.addEventListener('input', () => {
+    if (siPassword.value !== '') setInvalid(siPasswordField, false);
+  });
+
+  signinForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validateSignin()) return;
+    await submitSignin();
+  });
+
+  checkRegistrationSuccess();
 </script>
 </body>
 </html>

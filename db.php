@@ -1,8 +1,7 @@
 <?php
-// db.php
 $DB_HOST = '127.0.0.1';
-$DB_USER = 'root';        // change if needed
-$DB_PASS = '';            // change if needed
+$DB_USER = 'root';
+$DB_PASS = '';
 $DB_NAME = 'sunsonsolar';
 
 $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
