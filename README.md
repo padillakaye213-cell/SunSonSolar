@@ -1,62 +1,35 @@
-# SunSonSolar Registration System
+# Sun Son Solar — PHP / CSS / SQL website
 
-## Team Name
-**JustCommit**
+Requires PHP 8.1+ (PDO MySQL) and MySQL/MariaDB.
 
-## How the System Works
+## Install
+1. Import the database: `mysql -u root -p < schema.sql`
+2. Edit `config.php` (DB credentials; set `BASE_URL` if the site is in a sub-folder, e.g. `/sunson`).
+3. Serve the folder (Apache/XAMPP/Laragon, or `php -S localhost:8000` inside this folder).
+4. Open `/setup.php` **once** to load demo products, posts, FAQs and starter accounts, then **delete `setup.php`**.
+5. Make sure `uploads/` is writable by the web server.
 
-### Registration
-- The user fills out the registration form and chooses an account type: Customer or Employee.
-- If Employee is chosen, a department dropdown appears and must be selected.
-- On submit, CodeIgniter validates all inputs server-side:
-  - Email must be valid and unique
-  - Username must be at least 4 characters and unique
-  - Password must be at least 8 characters and match the confirmation
-- If valid, the account is created with a hashed password using `password_hash()`.
-- If invalid, error messages appear at the top of the form.
+## Starter accounts (created by setup.php — change immediately)
+| Role | Username | Password |
+|---|---|---|
+| Admin | admin | Admin#2026 |
+| Dispatcher | dispatcher | Dispatch#2026 |
+| HR | hr | HumanR#2026 |
+| Technician | technician | Tech#2026 |
+| Customer | customer | Customer#2026 |
 
-### Sign-In
-- The user enters their username and password.
-- The system looks up the username and verifies the password using `password_verify()`.
-- If correct, a session is created and the user is redirected by role:
-  - Admin → `/admin/dashboard`
-  - Employee → `/employee/dashboard`
-  - Customer → `/customer/dashboard`
-- If incorrect, an error message appears.
+## Structure
+- `index.php, products.php, product.php, services.php, about.php, faq.php, blog.php, contact.php, privacy.php, terms.php` — public site
+- `login.php, register.php, forgot.php, reset.php, logout.php` — authentication
+- `customer/` — dashboard (schedule, notifications, history, support, profile), payments, receipts, monitoring, feedback
+- `technician/` — mobile-first check-in, jobs, announcements, problem report
+- `admin/` — overview, users, schedule, invoices, reports, notifications, inventory, problems, attendance, settings, audit log
+- `includes/` — helpers, layout, shared user form
+- `assets/css/style.css` — palette: #2f4156 · #567C8D · #C8D9E6 · #F5EFEB · #FFFFFF
+- `assets/js/app.js` — small helpers (show/hide password, strength meter, GPS check-in, live validation)
 
-### Role-Based Access
-- Each dashboard is protected. A user can only access the dashboard matching their role.
-
-### Logout
-- Visiting `/logout` destroys the session and returns to the sign-in page.
-
----
-
-## How to Install
-
-### Requirements
-- XAMPP (Apache + MySQL + PHP 8.1 or higher)
-- The `intl` extension enabled in PHP
-
-### Steps
-
-1. **Place the project in XAMPP**
-
-
-2. **Import the database**
-- Open `http://localhost/phpmyadmin`
-- Create a database named `sunsonsolar`
-- Import `sunsonsolar.sql`
-
-3. **Create the `.env` file**
-- Copy the `env` file in the project root and rename the copy to `.env`
-- Set these values:
-
-
-4. **Enable the `intl` extension**
-- Open `C:\xampp\php\php.ini`
-- Remove the `;` before `extension=intl`
-- Restart Apache
-
-5. **Run the app**
-- Open your browser to:
+## Before going live
+- Delete `setup.php`; set `DEV_SHOW_RESET_LINK` to `false` in `config.php`; use HTTPS.
+- Replace placeholder phone/email/social links (Admin → Settings and `includes/layout.php`).
+- Payments are recorded as "pending verification" — connect a real gateway (GCash/Maya/card) before accepting money.
+- Have the Privacy Policy and Terms reviewed by counsel.
